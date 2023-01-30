@@ -1,6 +1,7 @@
 /* Modal */
 .ReactModalPortal > div{
     opacity: 0;
+    
 }
 
 .ReactModalPortal .ReactModal__Overlay {
@@ -9,6 +10,7 @@
     justify-content: center;
     transition: opacity .2s ease-in-out;
     z-index: 999;
+    
 }
 
 .modal-fondo {
@@ -37,6 +39,33 @@
     max-width: 500px;
     outline: none;
     padding: 10px;
+    
+}
+
+/* FABS */
+
+.fab {
+    border-radius: 100%;
+    bottom: 25px;
+    font-size: 30px;
+    padding: 25px;
+    position: fixed;
+    right: 25px;
+    
+
+}
+
+.fab-danger {
+    border-radius: 100%;
+    bottom: 25px;
+    font-size: 20px;
+    
+    position: fixed;
+    left: 25px;
+    width: 50px;
+    height: 50px;
+
+
 }
 
 

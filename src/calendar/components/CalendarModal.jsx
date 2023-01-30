@@ -1,5 +1,5 @@
 import { addHours, differenceInSeconds } from 'date-fns';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Modal from 'react-modal';
 import DatePicker, { registerLocale } from "react-datepicker";
@@ -7,6 +7,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import es from 'date-fns/locale/es';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+
+import { useCalendarStore, useUiStore } from '../../hooks';
 
 
 registerLocale('es', es)
@@ -27,13 +29,15 @@ Modal.setAppElement('#root');
 
 export const CalendarModal = () => {
 
-    const [isOpen, setIsOpen] = useState(true);
+    const { isDateModalOpen, closeDateModal } = useUiStore();
+
+    const { activeEvent, startSavingEvent } = useCalendarStore();
 
     const [formSubmitted, setFormSubmitted] = useState(false)
 
     const [formValues, setFormValues] = useState({
-        title: 'Andres',
-        notes: 'Silva',
+        title: '',
+        notes: '',
         start: new Date(),
         end: addHours( new Date(), 2),
 
@@ -48,6 +52,16 @@ export const CalendarModal = () => {
 
     }, [ formValues.title, formSubmitted ]
     )
+
+    useEffect(() => {
+      if ( activeEvent !== null ) {
+        setFormValues({ ...activeEvent });
+      }
+    
+    
+    }, [activeEvent])
+    
+
 
     const onInputChanged = ({ target }) => {
         setFormValues({
@@ -65,11 +79,12 @@ export const CalendarModal = () => {
 
     const onCloseModal = () => {
         console.log('cerrando modal')
+        closeDateModal()
 
-        setIsOpen( false );
+        
     }
 
-    const onSubmit = ( event ) => {
+    const onSubmit = async( event ) => {
         event.preventDefault();
         setFormSubmitted(true);
 
@@ -83,12 +98,17 @@ export const CalendarModal = () => {
         if ( formValues.title.length <= 0 ) return;
         console.log(formValues)
 
+        //TODO:
+        await startSavingEvent( formValues );
+        closeDateModal();
+        setFormSubmitted(false);
+
     }
 
 
   return (
     <Modal
-        isOpen={ isOpen }
+        isOpen={ isDateModalOpen }
         onRequestClose={onCloseModal}
         style={customStyles}
         className="modal"
