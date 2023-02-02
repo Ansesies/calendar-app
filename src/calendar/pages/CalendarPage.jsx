@@ -23,7 +23,7 @@ export const CalendarPage = () => {
 
   const eventStyleGetter = ( event, start, end, isSelected ) => {
 
-    const isMyEvent = ( user.uid === event.user._id ) || ( user.uid === event.user.uid );
+    const isMyEvent = event.user ? ( user.uid === event.user._id ) || ( user.uid === event.user.uid ) : false;
 
     
 

@@ -3,7 +3,10 @@
 export const CalendarEvent = ({event}) => {
 
     const { title, user } = event;
- 
+
+    if (!user) {
+      return null;
+    }
    
 
 
